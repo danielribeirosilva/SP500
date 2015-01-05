@@ -3,7 +3,7 @@ data_path = 'data/';
 files_path = [data_path 'consolidated_data/'];
 
 addpath(data_path);
-addpath([files_path]);
+addpath(files_path);
 
 kpis_list = {'open', 'high', 'low', 'close', 'volume', 'adjusted_close'};
 
@@ -13,6 +13,9 @@ for i = 1:length(kpis_list)
     filename = [kpi '.csv'];
     eval(['raw_data.' kpi ' = csvread(''' filename ''')';]);
 end
+
+%create end-of-day growth variable
+raw_data.adjusted_growth = (raw_data.adjusted_close - raw_data.open) ./ raw_data.open;
 
 % load metadata
 raw_data.symbols = importdata('symbols.csv');
